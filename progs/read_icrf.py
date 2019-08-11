@@ -186,40 +186,6 @@ def read_icrf3(icrf3_file="../data/icrf3sx.txt"):
 
     return icrf3
 
-def write_nnr_list(soulist, ofile=None):
-    """Write source list by every 8 sources per line
-
-    Parameters
-    ----------
-    soulist: astropy.table.Table object
-        source list
-    ofile: string
-        output file name
-
-    Return
-    ------
-    None
-    """
-
-    # Open the file
-    if ofile is None:
-        fout = sys.stdout
-    else:
-        fout = open(ofile, "w")
-
-    # Loop to write
-    print("    ", file=fout, end="")
-    for i, sou in enumerate(soulist):
-        print("{:8}  ".format(sou), file=fout, end="")
-
-        if not (i+1) % 8:
-            print("\\\n    ", file=fout, end="")
-
-    # Close the file
-    if fout is not sys.stdout:
-        fout.close()
-
-
 # -------------------------------- MAIN --------------------------------
 if __name__ == '__main__':
     pass
