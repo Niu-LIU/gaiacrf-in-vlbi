@@ -9,7 +9,7 @@ Created on Thu Apr 26 17:43:09 2018
 
 import numpy as np
 from astropy.io import fits
-from write_solvesrc import write_solvesrc, write_NNRS
+from write_sou_src import write_sou_src, write_nnr_list
 
 
 # -----------------------------  FUNCTIONS -----------------------------
@@ -46,15 +46,12 @@ def write_icrf2_solve(datafile, Gaiasouivs, fout):
 '''Write the Gaia DR1 source position into the Solve format.
 '''
 
-print('======================= BEGIN ============================\n'
-      '# Write Gaia DR2 qso into Solve format')
+print("======================= BEGIN ============================\n"
+      "# Write Gaia DR2 aux_iers_cross_id into Solve format")
 
 
 # read data
-# datafile = (
-#     "/Users/Neo/Astronomy/Works/201711_GDR2_ICRF3/data/icrf2_gaiadr2.fits")
-datafile = (
-    "/Users/Neo/Astronomy/Works/201711_GDR2_ICRF3/data/icrf2_gaiadr2_all.fits")
+datafile = "../data/gaiadr2-aux-iers.fits"
 
 
 hdulist = fits.open(datafile, memmap=True)

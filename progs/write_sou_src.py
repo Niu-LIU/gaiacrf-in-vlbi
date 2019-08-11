@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-# File name: write_sou_solve.py
+# File name: write_sou_src.py
 """
 Created on Thu Apr 26 17:43:41 2018
 
@@ -11,12 +11,10 @@ from astropy.coordinates import Angle
 import astropy.units as u
 import numpy as np
 
-__all__ = ["write_solve_src", "write_nnr_list"]
-
-
+__all__ = ["write_sou_src", "write_nnr_list"]
 
 # -----------------------------  FUNCTIONS -----------------------------
-def write_solve_src(cat, ofile, comments=""):
+def write_sou_src(cat, ofile, comments=""):
     """Write source position into .src format
 
     Parameters
