@@ -18,6 +18,7 @@ import astropy.coordinates as coord
 from astropy.coordinates import SkyCoord
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 # My modules
 from my_progs.catalog.read_gaia import read_dr2_iers
@@ -57,6 +58,13 @@ comsou.add_columns(
 comsou["dra"].unit = u.mas
 comsou["ddec"].unit = u.mas
 comsou["dra_err"].unit = u.mas
+
+# Rename the columns
+comsou.rename_column("iers_name", "source_name")
+comsou.rename_column("ra_gaiadr2", "ra")
+comsou.rename_column("dec_gaiadr2", "dec")
+comsou.rename_column("dec_err_gaiadr2", "dec_err")
+
 #################################
 # Look at this part later (end)
 #################################
@@ -64,16 +72,31 @@ comsou["dra_err"].unit = u.mas
 # Use the ICRF3 defining sources in the Gaia DR2 dataset as the NNR list
 maskdef = (comsou["type"] == "D")
 comdef = comsou[maskdef]
-souno = len(comdef)
+defsouno = len(comdef)
 
-print("There are {} among so-called ICRF3-defining sources in the Gaia DR2".format(souno))
-
-comdef.rename_column("iers_name", "source_name")
+print("There are {} among so-called ICRF3-defining sources "
+      "in the Gaia DR2".format(defsouno))
 
 # Write source list into a text file
 deflist = "../logs/icrf3-def-in-gdr2.list"
 print("Output file:", deflist)
-lsthead = "*-- {} among ICRF3 defining sources from Gaia DR2".format(souno)
+lsthead = "*-- {} among ICRF3 defining sources from Gaia DR2".format(defsouno)
 write_nnr_list(comdef["source_name"], lsthead, deflist)
+
+# create a .src file containing exclusively Gaia DR2 positions of the 250
+#  sources among the ICRF3 defining source list.
+defsrcfile = "../logs/icrf3-def-in-gdr2.src"
+print("Output file:", defsrcfile)
+# header
+defsrchead = ("$$ {} sources in ICRF3 defining source list from GaiaDR2_IERS.".format(defsouno))
+
+write_sou_src(comdef, defsrcfile, defsrchead, "GaiaDR2_IERS")
+
+# Copy files
+datadir = "/home/neo/data/solutions/gaia-crf/"
+print("Copy", defsrcfile, "to", datadir)
+os.system("cp {} {}".format(defsrcfile, datadir))
+print("Copy", deflist, "to", datadir)
+os.system("cp {} {}".format(deflist, datadir))
 
 # --------------------------------- END --------------------------------

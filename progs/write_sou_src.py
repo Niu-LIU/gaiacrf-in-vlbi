@@ -14,6 +14,7 @@ import sys
 
 __all__ = ["write_sou_src", "write_nnr_list"]
 
+
 # -----------------------------  FUNCTIONS -----------------------------
 def write_sou_src(cat, ofile=None, header="", comments=""):
     """Write source position into .src format
@@ -45,8 +46,10 @@ def write_sou_src(cat, ofile=None, header="", comments=""):
     print(header, file=fout)
 
     # Format of every line
-    linefmt = "%8s  %02d %02d %11.8f   %+03d %02d  %10.7f   %7.3f   %s"
-
+    if len(comments):
+        linefmt = "    %8s  %02d %02d %11.8f   %s %02d  %10.7f   %7.3f  ! %s"
+    else:
+        linefmt = "    %8s  %02d %02d %11.8f   %s %02d  %10.7f   %7.3f"
 
     # Loop to write the position for every source
     for i in range(len(cat)):
@@ -54,7 +57,8 @@ def write_sou_src(cat, ofile=None, header="", comments=""):
         ra, dec = cat[i]["ra"], cat[i]["dec"]
         dec_err = cat[i]["dec_err"]
 
-        raang, decang = Angle(ra*u.deg), Angle(dec*u.deg)
+        raang = Angle(ra * u.deg)
+        decang = Angle(dec * u.deg)
         rah, ram, ras = raang.hms
         decd, decm, decs = decang.dms
 
@@ -62,14 +66,23 @@ def write_sou_src(cat, ofile=None, header="", comments=""):
         # the degree, arcminute, and arcsecond extracted from the resulted tuple
         # would be all negative if the Angle is negative.
         # But we only want the degree part to be negative.
+        if decang < 0 and decd == 0:
+            decdstr = "-00"
+        else:
+            decdstr = "{:+03.0f}".format(decd)
+
         decm, decs = np.fabs(decm), np.fabs(decs)
 
-        print(linefmt % (souname, rah, ram, ras, decd, decm, decs, dec_err,
-          comments), file=fout)
+        if len(comments):
+            print(linefmt % (souname, rah, ram, ras, decdstr, decm, decs, dec_err,
+                             comments), file=fout)
+        else:
+            print(linefmt % (souname, rah, ram, ras, decdstr, decm, decs, dec_err), file=fout)
 
     # Close the file
     if fout is not sys.stdout:
         fout.close()
+
 
 def write_nnr_list(soulist, header="", ofile=None):
     """Write source list by every 8 sources per line
@@ -105,13 +118,14 @@ def write_nnr_list(soulist, header="", ofile=None):
         if not (i+1) % 8:
             print("\\\n    ", file=fout, end="")
 
-    print("*----", file=fout)
+    print("\n*----", file=fout)
 
     # Close the file
     if fout is not sys.stdout:
         fout.close()
 
+
 if __name__ == "__main__":
-  print("This is a file only containing some ")
+    print("This is a file only containing some ")
 
 # --------------------------------- END --------------------------------

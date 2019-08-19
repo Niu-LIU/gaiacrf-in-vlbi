@@ -9,6 +9,9 @@ Created on Thu Apr 26 17:43:09 2018
 
 from astropy.table import Table
 import numpy as np
+import os
+
+# My modules
 from write_sou_src import write_sou_src, write_nnr_list
 
 
@@ -67,8 +70,8 @@ print("======================= BEGIN ============================\n"
 
 # Input &output files
 ifile = "../data/gaiadr2-aux-iers.fits"
-srcfile = "../data/gaiadr2-aux-iers.src"
-srclist = "../data/gaiadr2-aux-iers.list"
+srcfile = "../logs/gaiadr2-aux-iers.src"
+srclist = "../logs/gaiadr2-aux-iers.list"
 
 print("Original file:", ifile)
 print("Outpuf src file:", srcfile)
@@ -76,7 +79,7 @@ print("output list file:", srclist)
 
 # header
 srchead = ("$$ This file consists of SOLVE-format positions for 2820 "
-      "sources from GaiaDR2_IERS.\n$$ original file: {}".format(ifile))
+           "sources from GaiaDR2_IERS.\n$$ original file: {}".format(ifile))
 lsthead = "*-- 2820 optical counterparts of ICRF sources from Gaia DR2"
 
 
@@ -84,8 +87,15 @@ gdr2 = read_dr2_qso(ifile)
 gdr2.rename_column("iers_name", "source_name")
 
 
-write_sou_src(gdr2, srcfile, head, "GaiaDR2_IERS")
+write_sou_src(gdr2, srcfile, srchead, "GaiaDR2_IERS")
 write_nnr_list(gdr2["source_name"], lsthead, srclist)
+
+# Copy files
+datadir = "/home/neo/data/solutions/gaia-crf/"
+print("Copy", srcfile, "to", datadir)
+os.system("cp {} {}".format(srcfile, datadir))
+print("Copy", srclist, "to", datadir)
+os.system("cp {} {}".format(srclist, datadir))
 
 print('=======================  END  ============================')
 
