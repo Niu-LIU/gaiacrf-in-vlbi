@@ -8,8 +8,6 @@ Created on Tue Aug 13 14:02:03 2019
 
 This generate the .src file used as the a priori file of source positions in Solve.
 The Gaia DR2 optical/ICRF3 radio positions for AGN will be used.
-
-
 """
 
 from astropy.table import Table, join, Column
