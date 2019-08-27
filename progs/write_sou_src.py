@@ -47,9 +47,9 @@ def write_sou_src(cat, ofile=None, header="", comments=""):
 
     # Format of every line
     if len(comments):
-        linefmt = "    %8s  %02d %02d %11.8f   %s %02d  %10.7f   %7.3f  ! %s"
+        linefmt = "%8s     %02d %02d %11.8f    %s %02d %10.7f  %7.3f  ! %s"
     else:
-        linefmt = "    %8s  %02d %02d %11.8f   %s %02d  %10.7f   %7.3f"
+        linefmt = "%8s     %02d %02d %11.8f    %s %02d %10.7f  %7.3f"
 
     # Loop to write the position for every source
     for i in range(len(cat)):
@@ -66,7 +66,7 @@ def write_sou_src(cat, ofile=None, header="", comments=""):
         # the degree, arcminute, and arcsecond extracted from the resulted tuple
         # would be all negative if the Angle is negative.
         # But we only want the degree part to be negative.
-        if decang < 0 and decd == 0:
+        if dec < 0 and decd == 0:
             decdstr = "-00"
         else:
             decdstr = "{:+03.0f}".format(decd)
