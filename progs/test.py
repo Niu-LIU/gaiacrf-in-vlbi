@@ -1,24 +1,30 @@
-fig, (ax0, ax1) = plt.subplots(figsize=(8, 8), nrows=2, sharex=True)
+def parse_arc(arcfile):
+    """Extract session identifier and network from arc file.
 
-ax0.plot(soldif1["dec"], soldif1["dra"], ".", ms=1)
-ax1.plot(soldif1["dec"], soldif1["ddec"], ".", ms=1)
+    This maybe only works for the src file of Sebastien.
+    """
+    sessids = []
+    networks = []
 
-ax0.set_ylabel("Offset in R.A. [mas]")
+    with open(arcfile, "r") as farc:
+        for line in farc.readlines():
 
-ax1.set_xlabel("Declination [$^\circ$]")
-ax1.set_ylabel("Offset in decl. [mas]")
+            line = line.strip().strip("\n")
 
-ax1.set_xticks(np.arange(-90, 91, 30))
+            # The commented character is "*"
+            if line.startswith("*"):
+                continue
 
-ax0.set_xlim([-90, 90])
-ax0.set_ylim([-0.1, 0.1])
-ax1.set_ylim([-0.1, 0.1])
+            line1, line2 = line.split("!")
+            sessid = line1.split()[0]
+            network = line2.split()[-1]
 
-ax0.set_title("Positional difference vs decl.", fontsize=15)
+            sessids.append(sessid)
+            networks.append(network)
 
-ax0.xaxis.set_ticks_position("both")
-ax0.yaxis.set_ticks_position("both")
-ax1.xaxis.set_ticks_position("both")
-ax1.yaxis.set_ticks_position("both")
+    return sessids, networks
 
-plt.subplots_adjust(hspace=0.1)
+
+arcfile = "../data/icrf3.arc"
+
+sessids, networks = parse_arc(arcfile)

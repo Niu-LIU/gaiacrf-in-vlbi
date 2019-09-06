@@ -5,6 +5,9 @@
 Created on Thu Apr 26 17:43:41 2018
 
 @author: Neo(liuniu@smail.nju.edu.cn)
+
+Sep 06, 2019: change the colomun name from "dec_err" to "wgt_err"
+
 """
 
 from astropy.coordinates import Angle
@@ -55,7 +58,7 @@ def write_sou_src(cat, ofile=None, header="", comments=""):
     for i in range(len(cat)):
         souname = cat[i]["source_name"]
         ra, dec = cat[i]["ra"], cat[i]["dec"]
-        dec_err = cat[i]["dec_err"]
+        wgt_err = cat[i]["wgt_err"]
 
         raang = Angle(ra * u.deg)
         decang = Angle(dec * u.deg)
@@ -74,10 +77,10 @@ def write_sou_src(cat, ofile=None, header="", comments=""):
         decm, decs = np.fabs(decm), np.fabs(decs)
 
         if len(comments):
-            print(linefmt % (souname, rah, ram, ras, decdstr, decm, decs, dec_err,
+            print(linefmt % (souname, rah, ram, ras, decdstr, decm, decs, wgt_err,
                              comments), file=fout)
         else:
-            print(linefmt % (souname, rah, ram, ras, decdstr, decm, decs, dec_err), file=fout)
+            print(linefmt % (souname, rah, ram, ras, decdstr, decm, decs, wgt_err), file=fout)
 
     # Close the file
     if fout is not sys.stdout:
