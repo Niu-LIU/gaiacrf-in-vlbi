@@ -1,30 +1,37 @@
-def parse_arc(arcfile):
-    """Extract session identifier and network from arc file.
+# My modules
+from my_progs.catalog.vsh_deg1_cor import vsh_deg01_fitting
 
-    This maybe only works for the src file of Sebastien.
-    """
-    sessids = []
-    networks = []
+# Gaia DR2 - ICRF3 S/X
+pmra = np.array(defsou["pmra"])
+pmdec = np.array(defsou["pmdec"])
+pmraerr = np.array(defsou["pmra_err"])
+pmdecerr = np.array(defsou["pmdec_err"])
+pmradeccov = np.array(defsou["pmra_err"] * defsou["pmdec_err"] * defsou["pmra_pmdec_corr"])
 
-    with open(arcfile, "r") as farc:
-        for line in farc.readlines():
+# Transformation parameters
+# l_max = 2
+par, sig, _, _, _, _ = vsh_deg01_fitting(
+    pmra, pmdec, rarad, decrad, pmraerr, pmdecerr,
+    cov=pmradeccov, elim_flag="None")
 
-            line = line.strip().strip("\n")
+# mas -> uas
+spin = par * 1.e3
+serr = sig * 1.e3
 
-            # The commented character is "*"
-            if line.startswith("*"):
-                continue
-
-            line1, line2 = line.split("!")
-            sessid = line1.split()[0]
-            network = line2.split()[-1]
-
-            sessids.append(sessid)
-            networks.append(network)
-
-    return sessids, networks
-
-
-arcfile = "../data/icrf3.arc"
-
-sessids, networks = parse_arc(arcfile)
+# Print results
+print("Estimates (%6d sources)\n"
+      "----------------------------------------------"
+      "----------------------------------------------\n"
+      "                 Rotation [uas]                  "
+      "                 Glide [uas]               \n"
+      "             x             y             z"
+      "             x             y             z\n"
+      "----------------------------------------------"
+      "----------------------------------------------\n"
+      "        %+4.0f +/- %3.0f  %+4.0f +/- %3.0f  %+4.0f +/- %3.0f"
+      "        %+4.0f +/- %3.0f  %+4.0f +/- %3.0f  %+4.0f +/- %3.0f\n"
+      "----------------------------------------------"
+      "----------------------------------------------\n" %
+      (pmra.size,
+       spin[3], serr[3], spin[4], serr[4], spin[5], serr[5],
+       spin[0], serr[0], spin[1], serr[1], spin[2], serr[2],))
