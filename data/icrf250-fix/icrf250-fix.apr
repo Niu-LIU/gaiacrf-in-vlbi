@@ -1,0 +1,22 @@
+SOLVE-APR  Format version of 2006.11.14  
+# 
+# Apriori model used in Solve solution 
+# Spool file: icrf250-fix.spl
+# 
+SOLVE_RELEASE:       2019.02.28
+SOLVE_REVISION:      2019.02.28
+APRIORI_STYLE:       CALC/SOLVE
+SOLVE_STAPOS:        /home/oper/traitement/itrf2014.sit
+SOLVE_STAVEL:        /home/oper/traitement/itrf2014.vel
+SOLVE_SOUPOS:        /home/oper/traitement/icrf3.src
+SOLVE_EOP:           /home/oper/traitement/c04.erp
+PRE_2005 HEO:        NONE
+POST_2005 HEO:
+ECCENTRICITY:        /home/oper/traitement/ECCDAT.ecc
+AXIS OFFSETS:        /home/oper/traitement/gsfc_itrf2013.axo
+SPLINE_DSPL(1):
+POSVAR_FIL(1):       /home/oper/traitement/fes2004.hps
+POSVAR_FIL(2):       /home/oper/outils/aplo/bds/
+POSVAR_FIL(3):       /home/oper/outils/aplo/vsgd_aplo_s1_s2_noib.hps
+# 
+SOLVE-APR  Format version of 2006.11.14  

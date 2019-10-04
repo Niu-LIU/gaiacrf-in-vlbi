@@ -3,8 +3,8 @@ SOLVE-APR  Format version of 2006.11.14
 # Apriori model used in Solve solution 
 # Spool file: gcrf-a1u-fix.spl
 # 
-SOLVE_RELEASE:       2018.07.13
-SOLVE_REVISION:      2018.07.13
+SOLVE_RELEASE:       2019.02.28
+SOLVE_REVISION:      2019.02.28
 APRIORI_STYLE:       CALC/SOLVE
 SOLVE_STAPOS:        /home/oper/traitement/itrf2014.sit
 SOLVE_STAVEL:        /home/oper/traitement/itrf2014.vel
